@@ -1,0 +1,60 @@
+import { useState } from 'react';
+import { Bus, MapPin, Users, Clock, LogOut, Menu, X } from 'lucide-react';
+import { Button } from '../../../components/ui/button';
+import { Card } from '../../../components/ui/card';
+
+interface BusAdminDashboardProps {
+  isDark: boolean;
+  email: string;
+  onSignOut: () => void;
+}
+
+export default function BusAdminDashboard({ isDark, email, onSignOut }: BusAdminDashboardProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const stats = [
+    { label: 'Active Routes', value: '12', icon: MapPin, color: 'from-blue-500 to-blue-600' },
+    { label: 'Total Students', value: '456', icon: Users, color: 'from-green-500 to-green-600' },
+    { label: 'Pending Approvals', value: '8', icon: Clock, color: 'from-orange-500 to-red-600' }
+  ];
+
+  return (
+    <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900' : 'bg-gradient-to-br from-blue-50 via-white to-cyan-50'}`}>
+      <div className={`sticky top-0 backdrop-blur-xl border-b ${isDark ? 'bg-slate-900/80 border-white/10' : 'bg-white/80 border-gray-200'}`}>
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-3">
+            <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2">
+              {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+                <Bus className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Bus Admin</h1>
+                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Transport Management</p>
+              </div>
+            </div>
+          </div>
+          <Button onClick={onSignOut} className="flex items-center gap-2 px-3 py-2 bg-red-500/20 text-red-400">
+            <LogOut className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+
+      <div className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {stats.map((stat, index) => (
+            <Card key={index} className={`p-6 backdrop-blur-xl border ${isDark ? 'bg-white/5 border-white/10' : 'bg-white/60 border-gray-200'}`}>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4`}>
+                <stat.icon className="w-6 h-6 text-white" />
+              </div>
+              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{stat.label}</p>
+              <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{stat.value}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
